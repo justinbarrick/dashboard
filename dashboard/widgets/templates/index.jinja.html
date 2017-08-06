@@ -1,11 +1,26 @@
 <html>
     <head>
-
+      <link rel="stylesheet" href="/static/css/milligram.css">
+      <link rel="stylesheet" href="/static/css/main.css">
     </head>
 
     <body>
+      <header class="topBar">
+        <h1 class="headerTime">dashboard testing grounds</h1>
+      </header>
+      <h3>currently installed widgets:</h3>
         {% for widget in widgets %}
-            {{ widget }}
+            <h4>{{ widget }}</h4>
+            <div class="{{ widget }}">
+            </div>
         {% endfor %}
     </body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+{% for widget in widgets %}
+<script>
+$.get( "/api/widgets/{{ widget }}", function( data ) {
+  $( ".{{ widget }}" ).html( data );
+});
+</script>
+{% endfor %}
 </html>
