@@ -48,7 +48,6 @@ class WidgetServer:
 
         self.widgets = []
         self.widget_path = widget_path
-        self.index_template = self.get_template('index')
         self.app.static('/static', './static')
 
     @property
@@ -145,4 +144,5 @@ class WidgetServer:
         """
         Render the index page.
         """
+        self.index_template = self.get_template('index')
         return html(self.index_template.render({"widgets": self.widgets}))

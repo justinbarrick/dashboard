@@ -8,7 +8,7 @@ test:
 
 .PHONY: run
 run:
-	docker-compose -f docker/docker-compose.yml run dashboard
+	docker-compose -f docker/docker-compose.yml run --service-ports dashboard
 
 .PHONY: browser
 browser:
