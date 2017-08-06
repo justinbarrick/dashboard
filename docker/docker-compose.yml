@@ -6,6 +6,8 @@ services:
       dockerfile: docker/Dockerfile
     volumes:
       - ..:/home/user/dashboard
+    ports:
+      - 8080
 
   dashboard-test:
     build:
