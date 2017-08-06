@@ -1,0 +1,16 @@
+version: '2'
+services:
+  dashboard:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ..:/home/user/dashboard
+
+  dashboard-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    entrypoint: nosetests -v -s
+    volumes:
+      - ..:/home/user/dashboard
