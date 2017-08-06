@@ -7,8 +7,9 @@ test:
 	docker-compose -f docker/docker-compose.yml run dashboard-test
 
 .PHONY: run
-run:
+run: run-sonos
 	docker-compose -f docker/docker-compose.yml run --service-ports dashboard
+	docker-compose -f docker/docker-compose.yml run dashboard
 
 .PHONY: browser
 browser:
@@ -17,3 +18,7 @@ browser:
 .PHONY: mac-browser
 mac-browser:
 	open -a firefox http://127.0.0.1:$(shell docker inspect -f '{{(index (index .NetworkSettings.Ports "8080/tcp") 0).HostPort}}' $(shell docker-compose -f docker/docker-compose.yml ps -q dashboard |tail -n1))/
+
+.PHONY: run-sonos
+run-sonos:
+	cd node-sonos-http-api && npm install --production --user && npm start &

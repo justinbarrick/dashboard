@@ -1,0 +1,8 @@
+<div>
+{% for speaker in speakers %}
+    {{ speaker["name"] }}
+    <div>
+        {{ speaker["state"]["currentTrack"]["title"] }} - {{ speaker["state"]["currentTrack"]["artist"] }}
+    </div>
+{% endfor %}
+</div>
