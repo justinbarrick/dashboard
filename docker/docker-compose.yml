@@ -9,6 +9,14 @@ services:
     ports:
       - 8080
 
+  build-docs:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    entrypoint: bash -c 'cd docs && make html'
+    volumes:
+      - ..:/home/user/dashboard
+
   dashboard-test:
     build:
       context: ..
