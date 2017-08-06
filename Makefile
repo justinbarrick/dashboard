@@ -1,5 +1,6 @@
 .PHONY: build
 build:
+	cd docs && make html
 	docker-compose -f docker/docker-compose.yml build
 
 .PHONY: test
