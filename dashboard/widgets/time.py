@@ -1,6 +1,6 @@
 import datetime
 
-async def time_widget(request):
+async def time_widget(request, ws):
     """
     Return the current time.
     """

@@ -7,6 +7,10 @@ import glob
 import importlib
 import os
 
+from dashboard.sonos import Sonos
+import uvhttp.http
+import asyncio
+
 class WidgetServer:
     """
     Python framework for serving little widgets.
@@ -41,7 +45,7 @@ class WidgetServer:
 
     Static assets are served from `/static`.
     """
-    def __init__(self, widget_path):
+    def __init__(self, widget_path, sonos_api=None):
         self.__app = None
         self.__api_base = None
         self.__server = None
@@ -49,6 +53,9 @@ class WidgetServer:
         self.widgets = []
         self.widget_path = widget_path
         self.app.static('/static', './static')
+
+        self.client = uvhttp.http.Session(10, asyncio.get_event_loop())
+        self.sonos = Sonos(self.client, sonos_api or '127.0.0.1')
 
     @property
     def widget_path(self):
@@ -112,7 +119,7 @@ class WidgetServer:
         async def real_widget(request, *args, **kwargs):
             encoding = request.headers.get('accept-encoding', 'html')
 
-            response = await func(request, *args, **kwargs)
+            response = await func(request, self, *args, **kwargs)
             if 'json' in encoding:
                 return json(response)
             else:

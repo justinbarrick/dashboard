@@ -8,6 +8,6 @@ RUN pip3 install -r /requirements.txt
 USER user
 WORKDIR /home/user/dashboard
 
-CMD python3 run.py
+CMD python3 run.py --sonos-api gateway
 
 ADD . /home/user/dashboard
