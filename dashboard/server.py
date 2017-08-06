@@ -16,6 +16,7 @@ class WidgetServer:
         self.widgets = []
         self.widget_path = widget_path
         self.index_template = self.get_template('index')
+        self.app.static('/static', './static')
 
     @property
     def widget_path(self):
