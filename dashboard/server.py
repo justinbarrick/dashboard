@@ -8,6 +8,39 @@ import importlib
 import os
 
 class WidgetServer:
+    """
+    Python framework for serving little widgets.
+
+    Widgets can be stored in dashboard/widgets/.
+
+    Any function ending with `_widget` will be routed to
+    `/api/widgets/widget_name`. For example, `time_widget` is routed to
+    `/api/widgets/time`.
+
+    Widgets are loaded from `widget_path`.
+
+    An example widget looks like:
+
+    ```
+    import datetime
+
+    async def time_widget(request):
+        return {
+            "date": datetime.datetime.now().strftime("%A %B %d, %Y"),
+        }
+    ```
+
+    The widget can then be served as a JSON response or via HTML.
+
+    If HTML is requested, the returned JSON will be passed to the Jinja
+    template (`$widget_path/templates/$widget_name.jinja.html`) and rendered:
+
+    ```
+    <div>{{ date }}</div>
+    ```
+
+    Static assets are served from `/static`.
+    """
     def __init__(self, widget_path):
         self.__app = None
         self.__api_base = None
@@ -49,6 +82,9 @@ class WidgetServer:
         return self.__app
 
     def load(self):
+        """
+        Load all widgets.
+        """
         for widget in glob.glob(os.path.join(self.widget_path, '*.py')):
             widget_name = os.path.splitext(widget)[0].replace('/', '.')
             module = importlib.import_module(widget_name)
@@ -60,11 +96,17 @@ class WidgetServer:
                 self.widgets.append(name)
 
     def get_template(self, name):
+        """
+        Fetch a template so it can be used for rendering.
+        """
         template_path = os.path.join(self.widget_path, 'templates')
         template_path = os.path.join(template_path, name + '.jinja.html')
         return Template(open(template_path).read())
 
     def widget(self, name, func):
+        """
+        Add a widget function.
+        """
         template = self.get_template(name)
 
         @functools.wraps(func)
@@ -81,6 +123,9 @@ class WidgetServer:
         self.app.add_route(real_widget, route)
 
     async def start(self, log_config=None):
+        """
+        Start the widget server.
+        """
         if self.server:
             return
 
@@ -89,9 +134,15 @@ class WidgetServer:
         self.server = await self.app.create_server(host='0.0.0.0', port=8080, log_config=log_config)
 
     def stop(self):
+        """
+        Stop the widget server.
+        """
         if self.server:
             self.server.close()
             self.server = None
 
     async def index(self, request):
+        """
+        Render the index page.
+        """
         return html(self.index_template.render({"widgets": self.widgets}))
