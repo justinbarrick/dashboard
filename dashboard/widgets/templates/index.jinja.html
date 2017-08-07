@@ -5,22 +5,25 @@
     </head>
 
     <body>
-      <header class="topBar">
-        <h1 class="headerTime">dashboard testing grounds</h1>
-      </header>
-      <h3>currently installed widgets:</h3>
-        {% for widget in widgets %}
-            <h4>{{ widget }}</h4>
-            <div class="{{ widget }}">
-            </div>
-        {% endfor %}
+      <div class="sonosBackground"></div>
+      <div class="widgetContainer">
+        <header class="topBar">
+          <h1 class="headerTime">dashboard alpha 0.1</h1>
+        </header>
+          {% for widget in widgets %}
+              <div class="{{ widget }}">
+              </div>
+          {% endfor %}
+        </div>
     </body>
 <script src="/static/js/jquery-3.2.1.min.js"></script>
-{% for widget in widgets %}
 <script>
-$.get( "/api/widgets/{{ widget }}", function( data ) {
-  $( ".{{ widget }}" ).html( data );
-});
+  {% for widget in widgets %}
+    setInterval(function(){
+    $.get( "/api/widgets/{{ widget }}", function( data ) {
+      $( ".{{ widget }}" ).html( data );
+    });
+  }, 3000);
+  {% endfor %}
 </script>
-{% endfor %}
 </html>

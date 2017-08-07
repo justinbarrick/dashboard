@@ -1,8 +1,20 @@
-<div>
+<div class="widget sonos">
+{% set albumArt = None %}
 {% for speaker in speakers %}
-    {{ speaker["name"] }}
-    <div>
-        {{ speaker["state"]["currentTrack"]["title"] }} - {{ speaker["state"]["currentTrack"]["artist"] }}
+    <div class="sonosSpeaker {{ speaker["name"] }}">
+      <h2>Playing in {{ speaker["name"] }}</h2>
+      <div class="albumArtContainer">
+        <img src="{{ speaker["state"]["currentTrack"]["absoluteAlbumArtUri"]}}"></img>
+      </div>
+      <div class="sonosNowPlaying">
+        <span class="nowPlayingInfo trackTitle">{{ speaker["state"]["currentTrack"]["title"] }}</span>
+        <span class="nowPlayingInfo artistTitle">{{ speaker["state"]["currentTrack"]["artist"] }}</span>
+        <span class="nowPlayingInfo albumTitle">{{ speaker["state"]["currentTrack"]["album"] }}</span>
     </div>
+    <style>
+    .sonosBackground {
+      background-image: url({{ speaker["state"]["currentTrack"]["absoluteAlbumArtUri"]}});
+    }
+    </style>
 {% endfor %}
 </div>

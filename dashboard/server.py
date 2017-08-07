@@ -111,7 +111,6 @@ class WidgetServer:
         """
         Add a widget function.
         """
-        template = self.get_template(name)
 
         @functools.wraps(func)
         async def real_widget(request, *args, **kwargs):
@@ -121,6 +120,7 @@ class WidgetServer:
             if 'json' in encoding:
                 return json(response)
             else:
+                template = self.get_template(name)
                 return html(template.render(response))
 
         route = os.path.join(self.api_base, name)
