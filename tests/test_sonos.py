@@ -44,8 +44,9 @@ def with_sonos(func):
                             "currentTrack": {
                                 "duration": 0,
                                 "artist": "Lady Gaga",
-                                "album": "",
-                                "albumArtUri": "",
+                                "album": "Lady Gaga Album",
+                                "albumArtUri": "/lady_gaga.jpg",
+                                "absoluteAlbumArtUri": "https://sonos/lady_gaga.jpg",
                                 "uri": "",
                                 "title": "Pokerface",
                                 "stationName": "",
@@ -101,8 +102,9 @@ async def test_sonos_widget(client, widgets):
             "currentTrack": {
                 "duration": 0,
                 "artist": "Lady Gaga",
-                "album": "",
-                "albumArtUri": "",
+                "album": "Lady Gaga Album",
+                "albumArtUri": "/lady_gaga.jpg",
+                "absoluteAlbumArtUri": "https://sonos/lady_gaga.jpg",
                 "uri": "",
                 "title": "Pokerface",
                 "stationName": "",
@@ -114,4 +116,7 @@ async def test_sonos_widget(client, widgets):
     } ] })
 
     response = await request_widget(client, 'sonos', False)
-    assert_equal(response.text.replace('\n', '').replace('    ', ''), '<div>Living Room<div>Pokerface - Lady Gaga</div></div>')
+    assert_in('<span class="nowPlayingInfo trackTitle">Pokerface</span>', response.text)
+    assert_in('<span class="nowPlayingInfo artistTitle">Lady Gaga</span>', response.text)
+    assert_in('<span class="nowPlayingInfo albumTitle">Lady Gaga Album</span>', response.text)
+    assert_in('background-image: url(https://sonos/lady_gaga.jpg)', response.text)
