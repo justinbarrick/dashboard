@@ -7,13 +7,19 @@
         <img src="{{ speaker["state"]["currentTrack"]["absoluteAlbumArtUri"]}}"></img>
       </div>
       <div class="sonosNowPlaying">
+	{% if speaker["state"]["tv"] %}
+        <span class="nowPlayingInfo trackTitle">TV</span>
+	{% else %}
         <span class="nowPlayingInfo trackTitle">{{ speaker["state"]["currentTrack"]["title"] }}</span>
         <span class="nowPlayingInfo artistTitle">{{ speaker["state"]["currentTrack"]["artist"] }}</span>
         <span class="nowPlayingInfo albumTitle">{{ speaker["state"]["currentTrack"]["album"] }}</span>
-    </div>
+        {% endif %}
+      </div>
     <style>
     .dashboardBackground {
+      {% if not speaker["state"]["tv"] %}
       background-image: url({{ speaker["state"]["currentTrack"]["absoluteAlbumArtUri"]}});
+      {% endif %}
       -webkit-filter: blur(90px);
       -moz-filter: blur(90px);
       -o-filter: blur(90px);
