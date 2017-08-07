@@ -6,11 +6,66 @@
 Welcome to Dashboard's documentation!
 =====================================
 
+A cool little server for serving Python widgets.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   dashboard
 
+Installation
+============
+
+To install::
+
+    git clone https://github.com/justinbarrick/dashboard
+    cd dashboard
+    make build
+
+Running
+=======
+
+To run the unit tests::
+
+    make test
+
+To run the web server::
+
+    make run
+
+And then you can use ``make browser`` to load it in your browser.
+
+Writing new widgets
+===================
+
+To write a widget called ``example``, create a new file under ``dashboard/widgets``
+called ``example.py`` with the content::
+
+    async def example_widget(request):
+        return { 'variable': 'hello!' }
+
+This widget will then be reachable at ``/api/widgets/example``. Now, create a
+template for it in ``dashboard/widgets/templates/expample.jinja.html``::
+
+    <div>{{ variable }}</div>
+
+Finally, add a test in ``tests/test_widgets.py``::
+
+    @start_widgets('dashboard/widgets')
+    @with_client
+    async def test_example_widget(client, widgets):
+        """
+        A test for the example widget.
+        """
+
+        # Test the JSON widget response.
+        response = await request_widget(client, 'example')
+        assert_equal(response.json(), {'variable': 'hello!'})
+
+        # Test the HTML widget response.
+        response = await request_widget(client, 'example', False)
+        assert_equal(response.text, '<div>hello!</div>'.format(time))
 
 Indices and tables
 ==================
@@ -18,3 +73,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+

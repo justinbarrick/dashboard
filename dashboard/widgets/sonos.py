@@ -1,4 +1,3 @@
-from dashboard.sonos import Sonos
 import asyncio
 import datetime
 import uvhttp.http

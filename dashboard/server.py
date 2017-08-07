@@ -7,7 +7,7 @@ import glob
 import importlib
 import os
 
-from dashboard.sonos import Sonos
+from dashboard.widget import WidgetContext
 import uvhttp.http
 import asyncio
 
@@ -15,37 +15,33 @@ class WidgetServer:
     """
     Python framework for serving little widgets.
 
-    Widgets can be stored in dashboard/widgets/.
+    Widgets can be stored in ``dashboard/widgets/``.
 
-    Any function ending with `_widget` will be routed to
-    `/api/widgets/widget_name`. For example, `time_widget` is routed to
-    `/api/widgets/time`.
+    Any function ending with ``_widget`` will be routed to
+    ``/api/widgets/widget_name``. For example, ``time_widget`` is routed to
+    ``/api/widgets/time``.
 
-    Widgets are loaded from `widget_path`.
+    Widgets are loaded from ``widget_path``.
 
-    An example widget looks like:
+    An example widget looks like::
 
-    ```
-    import datetime
+        import datetime
 
-    async def time_widget(request):
-        return {
-            "date": datetime.datetime.now().strftime("%A %B %d, %Y"),
-        }
-    ```
+        async def time_widget(request):
+            return {
+                "date": datetime.datetime.now().strftime("%A %B %d, %Y"),
+            }
 
     The widget can then be served as a JSON response or via HTML.
 
     If HTML is requested, the returned JSON will be passed to the Jinja
-    template (`$widget_path/templates/$widget_name.jinja.html`) and rendered:
+    template (``$widget_path/templates/$widget_name.jinja.html``) and rendered::
 
-    ```
-    <div>{{ date }}</div>
-    ```
+        <div>{{ date }}</div>
 
-    Static assets are served from `/static`.
+    Static assets are served from ``/static``.
     """
-    def __init__(self, widget_path, sonos_api=None):
+    def __init__(self, widget_path):
         self.__app = None
         self.__api_base = None
         self.__server = None
@@ -54,8 +50,7 @@ class WidgetServer:
         self.widget_path = widget_path
         self.app.static('/static', './static')
 
-        self.client = uvhttp.http.Session(10, asyncio.get_event_loop())
-        self.sonos = Sonos(self.client, sonos_api or '127.0.0.1')
+        self.wc = WidgetContext()
 
     @property
     def widget_path(self):
@@ -119,7 +114,7 @@ class WidgetServer:
         async def real_widget(request, *args, **kwargs):
             encoding = request.headers.get('accept-encoding', 'html')
 
-            response = await func(request, self, *args, **kwargs)
+            response = await func(request, self.wc, *args, **kwargs)
             if 'json' in encoding:
                 return json(response)
             else:

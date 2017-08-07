@@ -1,6 +1,10 @@
 .PHONY: build
 build:
 	docker-compose -f docker/docker-compose.yml build
+	$(MAKE) build-docs
+
+.PHONY: build-docs
+build-docs:
 	docker-compose -f docker/docker-compose.yml run build-docs
 
 .PHONY: test

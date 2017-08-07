@@ -5,7 +5,7 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     volumes:
-      - ..:/home/user/dashboard
+      - ..:/dashboard
     ports:
       - 8080
 
@@ -15,7 +15,7 @@ services:
       dockerfile: docker/Dockerfile
     entrypoint: bash -c 'cd docs && make html'
     volumes:
-      - ..:/home/user/dashboard
+      - ..:/dashboard
 
   dashboard-test:
     build:
@@ -23,4 +23,4 @@ services:
       dockerfile: docker/Dockerfile
     entrypoint: nosetests -v -s
     volumes:
-      - ..:/home/user/dashboard
+      - ..:/dashboard

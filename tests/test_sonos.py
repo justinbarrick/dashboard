@@ -3,12 +3,16 @@ from nose.tools import *
 from test_utils import *
 import functools
 from sanic import Sanic
-from sanic.response import json
+from sanic.response import json, html
 
 def with_sonos(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
         app = Sanic(log_config=None)
+
+        @app.route('/')
+        def index(request):
+            return html('<html></html>')
 
         @app.route('/zones')
         def zones(request):
@@ -79,7 +83,7 @@ def with_sonos(func):
 @with_sonos
 @with_client
 async def test_sonos_zones(client, widgets):
-    s = Sonos(client, '127.0.0.1')
+    s = Sonos(client)
 
     zones = await s.api('zones')
     zone_names = list(map(lambda x: x['coordinator']['roomName'], zones))
