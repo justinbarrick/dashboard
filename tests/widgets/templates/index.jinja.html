@@ -1,11 +1,5 @@
 <html>
-    <head>
-
-    </head>
-
-    <body>
-        {% for widget in widgets %}
-            {{ widget }}
-        {% endfor %}
-    </body>
+{% for widget, widget_config in widgets.items() %}
+{{ widget }} - {{ widget_config["frequency"] }}
+{% endfor %}
 </html>

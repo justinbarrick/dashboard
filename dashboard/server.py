@@ -46,7 +46,7 @@ class WidgetServer:
         self.__api_base = None
         self.__server = None
 
-        self.widgets = []
+        self.widgets = {}
         self.widget_path = widget_path
         self.app.static('/static', './static')
 
@@ -93,8 +93,11 @@ class WidgetServer:
 
             for widget in widgets:
                 name = widget.split('_widget', 1)[0]
-                self.widget(name, getattr(module, widget))
-                self.widgets.append(name)
+
+                widget_func = getattr(module, widget)
+
+                self.widget(name, widget_func)
+                self.widgets[name] = widget_func
 
     def get_template(self, name):
         """
@@ -147,4 +150,8 @@ class WidgetServer:
         Render the index page.
         """
         self.index_template = self.get_template('index')
-        return html(self.index_template.render({"widgets": self.widgets}))
+        return html(self.index_template.render({
+            "widgets": dict([
+                (name, {"frequency": getattr(func, 'frequency', None)}) for name, func in self.widgets.items()
+            ])
+        }))
