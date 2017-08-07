@@ -17,7 +17,8 @@ async def sonos_widget(request, ws):
             "name": zone['coordinator']['roomName'],
             "state": {
                 "state": zone['coordinator']['state']['playbackState'],
-                "currentTrack": zone['coordinator']['state']['currentTrack'],
+                "currentTrack":  zone['coordinator']['state']['currentTrack'],
+                "tv": zone['coordinator']['state']['currentTrack']['type'] == 'line_in',
                 "volume": zone['coordinator']['state']['volume'],
                 "elapsed": zone['coordinator']['state']['elapsedTime']
             },
