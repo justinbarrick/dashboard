@@ -1,0 +1,80 @@
+Widget developers guide
+=======================
+
+The guide to writing widgets. A widget is a Python function that returns
+JSON that can be rendered onto a dashboard containing other widgets.
+
+The widgets will be refreshed periodically.
+
+.. toctree::
+   :maxdepth: 2
+
+   widget
+   widget_context
+   sonos
+
+Writing widgets is fairly simple. You'll need to write a widget function,
+a template, and an (optional) unit test.
+
+Widget function
+---------------
+
+To write the widget function, simply add it to a script in ``dashboard/widgets``.
+Any function ending in ``_widget`` will be imported as a widget::
+
+    from dashboard.widget import *
+
+    @refresh_every(10)
+    async def example_widget(widget_context):
+        return { "abc": "123" }
+
+All widget decorators are optional and can be found in :mod:`dashboard.widget`.
+
+Widget template
+---------------
+
+The widget template can be added in ``dashboard/widgets/templates``. It should have
+the same name as the widget function, for example ``dashboard/widgets/templates/example.jinja.html``::
+
+    <div>{{ abc }}</div>
+
+The Jinja template will be rendered with the widget's return value as the context. The above template
+and module would render to::
+
+    <div>123</div>
+
+Requesting the widget
+---------------------
+
+The widget will then be reachable at ``/api/widget/example``. By default, the template will be rendered
+and returned::
+
+    user@dev:~/src/dashboard$ curl http://172.18.0.2:8080/api/widgets/example
+    <div>123</div>
+    user@dev:~/src/dashboard$
+
+If a widget is requested with the ``application/json`` accept-encoding, the json will be returned
+instead of the rendered template::
+
+    user@dev:~/src/dashboard$ curl http://172.18.0.2:8080/api/widgets/example -H 'Accept-Encoding: application/json'
+    {"abc": "123"}
+    user@dev:~/src/dashboard$
+
+Note, the IP address of your dashboard will probably need to be changed. Run ``make browser`` or
+``make mac-browser`` to load the dashboard in your browser.
+
+Writing tests for widgets
+-------------------------
+
+To unit test a widget, simply add a test for it in ``tests/test_widgets.py``::
+
+    @start_widgets('dashboard/widgets')
+    @with_client
+    async def test_example_widget(client, widgets):
+        # write a test that tests the JSON API
+        response = await request_widget(client, 'example')
+        assert_equal(response.json(), {"abc":"123"})
+
+        # write a test that tests the HTML template response
+        response = await request_widget(client, 'example', False)
+        assert_equal(response.text, '<div>123</div>')
