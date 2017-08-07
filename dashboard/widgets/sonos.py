@@ -1,4 +1,4 @@
-from dashboard.widgets import *
+from dashboard.widget import *
 import asyncio
 import datetime
 import uvhttp.http
