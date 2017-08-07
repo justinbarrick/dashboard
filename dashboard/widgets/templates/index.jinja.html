@@ -5,25 +5,25 @@
     </head>
 
     <body>
-      <div class="sonosBackground"></div>
+      <div class="dashboardBackground"></div>
       <div class="widgetContainer">
         <header class="topBar">
           <h1 class="headerTime">dashboard alpha 0.1</h1>
         </header>
           {% for widget in widgets %}
-              <div class="{{ widget }}">
+              <div class="{{ widget }} widget">
               </div>
           {% endfor %}
         </div>
     </body>
 <script src="/static/js/jquery-3.2.1.min.js"></script>
 <script>
-  {% for widget in widgets %}
+  {% for widget, widget_config in widgets.items() %}
     setInterval(function(){
     $.get( "/api/widgets/{{ widget }}", function( data ) {
       $( ".{{ widget }}" ).html( data );
     });
-  }, 3000);
+  }, {{ (widget_config["frequency"] or 10) * 1000 }});
   {% endfor %}
 </script>
 </html>

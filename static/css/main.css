@@ -11,22 +11,6 @@ header.topBar {
   background:rgba(0,0,0,0.75);
   color:#FFF;
 }
-.sonosBackground {
-  -webkit-filter: blur(90px);
-  -moz-filter: blur(90px);
-  -o-filter: blur(90px);
-  -ms-filter: blur(90px);
-  filter: blur(90px);
-  display: block;
-  width: 110%;
-  height: 110%;
-  position: fixed;
-  left: -5%;
-  top: -5%;
-  z-index: 1;
-  background-size: cover;
-  background-position-y: 50%;
-}
 div.widgetContainer {
   z-index:100;
   width:100%;
