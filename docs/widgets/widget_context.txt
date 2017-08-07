@@ -1,0 +1,8 @@
+Widget Context
+==============
+
+An instance of the :class:`.WidgetContext` is passed to each
+widget when the widget is loaded.
+ 
+.. autoclass:: dashboard.widget_context.WidgetContext
+   :members:

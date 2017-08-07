@@ -1,0 +1,15 @@
+Widget Decorators
+=================
+
+The widget decorators can be applied to widgets to configure
+them in some fashion::
+
+    from dashboard.widget import *
+    import time
+
+    @refresh_every(5)
+    async def my_widget(wc):
+        return { "time": time.time() }	
+
+.. automodule:: dashboard.widget
+   :members:

@@ -7,7 +7,7 @@ import glob
 import importlib
 import os
 
-from dashboard.widget import WidgetContext
+from dashboard.widget_context import WidgetContext
 import uvhttp.http
 import asyncio
 

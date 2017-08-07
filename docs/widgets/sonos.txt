@@ -1,0 +1,9 @@
+Sonos API
+=========
+
+Module for interacting with the `Sonos node.js API`_.
+
+.. _Sonos node.js API: https://github.com/jishi/node-sonos-web-controller
+
+.. automodule:: dashboard.sonos
+   :members:

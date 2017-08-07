@@ -3,7 +3,17 @@ from dashboard.utils import get_default_gateway
 
 class Sonos:
     """
-    A module for querying the node.js Sonos API
+    A module for querying the `node.js Sonos API`_::
+
+        sonos = Sonos(uvhttp.session.Session(5, asyncio.get_event_loop()))
+        zones = await sonos.api('zones')
+        print(zones)
+
+    It will automatically find the API if it is reachable on localhost, the default
+    gateway, or ``docker.for.mac.local``. If it is not one of these, it should be indicated
+    in the ``api_host`` argument.
+
+    .. _node.js Sonos API: https://github.com/jishi/node-sonos-web-controller
     """
     def __init__(self, session, api_host=None, api_base=None):
         self.session = session

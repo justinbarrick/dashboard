@@ -1,5 +1,5 @@
-WidgetServer
-============
+Contributers guide
+==================
 
 The :class:`.WidgetServer` class is used for serving Python functions as widgets or API endpoints.
 
