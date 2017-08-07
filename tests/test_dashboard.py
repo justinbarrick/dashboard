@@ -15,7 +15,9 @@ async def test_dashboard_get_template(widgets):
 async def test_dashboard_index(client, widgets):
     response = await client.get(b'http://127.0.0.1:8080/')
     assert_in('<html>', response.text)
-    assert_in('time', response.text)
+    assert_in('time - 1', response.text)
+    assert_in('default_timeout - None', response.text)
+    assert_in('never_refresh - 0', response.text)
 
 @start_widgets()
 @with_client
@@ -49,3 +51,10 @@ async def test_dashboard_run(client):
 async def test_dashboard_static(client, widgets):
     response = await client.get(b'http://127.0.0.1:8080/static/favicon.ico')
     assert_equal(md5(response.content).hexdigest(), '3046037cd9f72499b31c5e10da7655d5')
+   
+@start_widgets()
+@with_client
+async def test_dashboard_refresh_every_decorator(client, widgets):
+    assert_equal(widgets.widgets['time'].frequency, 1)
+    assert_equal(widgets.widgets['never_refresh'].frequency, 0)
+    assert_equal(hasattr(widgets.widgets['default_timeout'], 'frequency'), False)

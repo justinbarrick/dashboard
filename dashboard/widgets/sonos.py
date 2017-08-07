@@ -1,7 +1,9 @@
+from dashboard.widget import *
 import asyncio
 import datetime
 import uvhttp.http
 
+@refresh_every(3)
 async def sonos_widget(request, ws):
     """
     Return the now playing information from Sonos.
