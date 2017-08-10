@@ -1,10 +1,14 @@
 language: python
 python:
-  - "3.5"
+- '3.5'
 sudo: required
 services:
-  - docker
+- docker
 install:
-  - make build
+- make build
 script:
-  - make test
+- make test
+- pip install codacy-coverage && python-codacy-coverage -r coverage.xml
+env:
+  global:
+    secure: k6+Zrt3v94Mcf3ZaFswpMmHnpaX0Gfqqt7uEI+Fsh9+ajnBePCW9URGKpTMx+eAtO3MXnJfw+jyF8qRtw5Z4DmBWII+5FHE7EcINLVcM31b6AgxJldSNg103WCwn4ORP9U3Q0by0vE6CG/W6KsUcl0vMcrgizmAzemONSMXchDo8frAYd2+A154e0MVDHx06Pf07lWw46swhfzLN4/sqtBs0Z6hN5ji36s3ElGl5ZgIUGsWN2ln/nMlYOA7RvDMFEcadpaU2ilN3jBuADUIdGAlZWFMSAtrwqyR+7a3gVdWhp5/InmvgXMr+pYFlCwZSr5+gU+bjuU4uygKJawVCmfUx/DIBSZcuj+X3IOixKbLqKnBOtHeL7geVcvMttg5OZGmjkPLvcoB8ICkX4lmATPLT5Da7X/yua1thH8D3Jwupy1NykPqOm+aPtxbu+tkaSYsNmkArp1XylVXeT9UmPdtkUYWyWTgFqN1KyILNGW9gL+0ATINwlmK+Xqpb1IJBiG2wRHG7B3KXIeiPpbPIyPOAxrLsJwFRkLmu3dWBDktg6Z5quwjkUEcQ8D53vqo0UhaQSoTYVrvMlpU2XmzGRZy5IIAHKb9FIalnRybOxAycDnG4B4cRLXHtsd3RwFexciwDbyL0B/YedFJZsrSsWSi6iVo0mmmZu0xiNIk1JMQ=
