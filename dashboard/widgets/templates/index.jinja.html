@@ -14,7 +14,7 @@
         </div>
     </body>
 <script src="/static/js/jquery-3.2.1.min.js"></script>
-<!--<script>
+<script>
   {% for widget, widget_config in widgets.items() %}
     setInterval(function(){
     $.get( "/api/widgets/{{ widget }}", function( data ) {
@@ -22,12 +22,5 @@
     });
   }, {{ (widget_config["frequency"] or 0) * 1000 }});
   {% endfor %}
-</script> -->
-</html>
-<script>
-  {% for widget, widget_config in widgets.items() %}
-    $.get( "/api/widgets/{{ widget }}", function( data ) {
-      $( ".{{ widget }}" ).html( data );
-    });
-  {% endfor %}
 </script>
+</html>
