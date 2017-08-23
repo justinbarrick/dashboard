@@ -49,6 +49,7 @@ class WidgetServer:
         self.widgets = {}
         self.widget_path = widget_path
         self.app.static('/static', './static')
+        self.app.static('/css', './dashboard/widgets/templates/css/')
 
         self.wc = WidgetContext()
 

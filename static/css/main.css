@@ -4,6 +4,7 @@ html,body {
   margin:0px;
   padding:0px;
   font-family: Helvetica, Arial, sans-serif;
+  color: #FFF;
 }
 header.topBar {
   width:100%;
@@ -17,4 +18,13 @@ div.widgetContainer {
   height:100%;
   position:fixed;
   background: rgba(0,0,0,0.5);
+}
+.sonosNowPlaying {
+  color:#FFF;
+}
+.widgetContainer {
+  display:flex;
+}
+.widget {
+  flex: 1 1 auto;
 }

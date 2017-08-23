@@ -1,0 +1,36 @@
+.sonos.widget {
+  display:flex;
+  align-items: center;
+}
+.sonosWidgetContainer {
+  width:80%;
+  margin: 0 auto;
+}
+.sonosSpeaker h2 {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  padding-bottom: 25px;
+}
+.sonosContentContainer {
+  display: flex;
+  width: 60%;
+  margin: 0 auto;
+}
+.albumArtContainer {
+  width: 400px;
+  height:400px;
+}
+.sonosNowPlaying {
+  margin-left: 40px;
+  font-size: 2.5em;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  letter-spacing: 2px;
+  font-weight: 100;
+}
+.nowPlayingInfo {
+  width:100%;
+  display:block;
+}
