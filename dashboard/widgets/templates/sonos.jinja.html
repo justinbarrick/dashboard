@@ -1,20 +1,26 @@
-<div class="widget sonos">
+<div class="sonosWidgetContainer">
+<link  rel="stylesheet" type="text/css" href="/css/sonos.css">
 {% set albumArt = None %}
 {% for speaker in speakers %}
     <div class="sonosSpeaker {{ speaker["name"] }}">
       <h2>Playing in {{ speaker["name"] }}</h2>
-      <div class="albumArtContainer">
-        <img src="{{ speaker["state"]["currentTrack"]["absoluteAlbumArtUri"]}}"></img>
+      <div class="sonosContentContainer">
+        <div class="albumArtContainer">
+          <img src="{{ speaker["state"]["currentTrack"]["absoluteAlbumArtUri"]}}"></img>
+        </div>
+        <div class="sonosNowPlaying">
+          <div class="sonosNowPlayingText">
+    	{% if speaker["state"]["tv"] %}
+            <span class="nowPlayingInfo trackTitle">TV</span>
+    	{% else %}
+            <span class="nowPlayingInfo trackTitle">{{ speaker["state"]["currentTrack"]["title"] }}</span>
+            <span class="nowPlayingInfo artistTitle">{{ speaker["state"]["currentTrack"]["artist"] }}</span>
+            <span class="nowPlayingInfo albumTitle">{{ speaker["state"]["currentTrack"]["album"] }}</span>
+          </div>
+        </div>
       </div>
-      <div class="sonosNowPlaying">
-	{% if speaker["state"]["tv"] %}
-        <span class="nowPlayingInfo trackTitle">TV</span>
-	{% else %}
-        <span class="nowPlayingInfo trackTitle">{{ speaker["state"]["currentTrack"]["title"] }}</span>
-        <span class="nowPlayingInfo artistTitle">{{ speaker["state"]["currentTrack"]["artist"] }}</span>
-        <span class="nowPlayingInfo albumTitle">{{ speaker["state"]["currentTrack"]["album"] }}</span>
+      </div>
         {% endif %}
-      </div>
     <style>
     .dashboardBackground {
       {% if not speaker["state"]["tv"] %}

@@ -7,9 +7,6 @@
     <body>
       <div class="dashboardBackground"></div>
       <div class="widgetContainer">
-        <header class="topBar">
-          <h1 class="headerTime">dashboard alpha 0.1</h1>
-        </header>
           {% for widget in widgets %}
               <div class="{{ widget }} widget">
               </div>
@@ -23,7 +20,7 @@
     $.get( "/api/widgets/{{ widget }}", function( data ) {
       $( ".{{ widget }}" ).html( data );
     });
-  }, {{ (widget_config["frequency"] or 10) * 1000 }});
+  }, {{ (widget_config["frequency"] or 0) * 1000 }});
   {% endfor %}
 </script>
 </html>

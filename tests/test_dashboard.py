@@ -42,7 +42,7 @@ async def test_dashboard_run(client):
     try:
         response = await client.get(b'http://127.0.0.1:8080/')
         assert_in('<html>', response.text)
-        assert_in('time', response.text)
+        assert_in('sonos', response.text)
     finally:
         widgets.stop()
 
@@ -51,7 +51,7 @@ async def test_dashboard_run(client):
 async def test_dashboard_static(client, widgets):
     response = await client.get(b'http://127.0.0.1:8080/static/favicon.ico')
     assert_equal(md5(response.content).hexdigest(), '3046037cd9f72499b31c5e10da7655d5')
-   
+
 @start_widgets()
 @with_client
 async def test_dashboard_refresh_every_decorator(client, widgets):
