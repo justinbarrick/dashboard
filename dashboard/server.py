@@ -200,7 +200,7 @@ class WidgetServer:
             return True
         except:
             return False
- 
+
     async def skill_endpoint(self, request):
         """
         Widgets can be exposed as Alexa skills by creating a SSML file

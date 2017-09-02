@@ -4,7 +4,7 @@ import datetime
 from nose.tools import *
 from test_utils import *
 from OpenSSL.crypto import FILETYPE_PEM, load_privatekey, sign
-from uvhttp.utils import HttpServer, http_server
+from uvhttp.utils import HttpServer
 from sanic.response import html
 from dashboard.server import ISO
 
@@ -146,9 +146,9 @@ async def test_alexa(client, widgets):
 @start_widgets()
 @with_client
 async def test_alexa_bad_signature(client, widgets):
-    alexa_response = await alexa_request(widgets, client, "alexa", bad=True)
+    await alexa_request(widgets, client, "alexa", bad=True)
 
 @start_widgets()
 @with_client
-async def test_alexa(client, widgets):
-    alexa_response = await alexa_request(widgets, client, "alexa", old=True)
+async def test_alexa_old(client, widgets):
+    await alexa_request(widgets, client, "alexa", old=True)
