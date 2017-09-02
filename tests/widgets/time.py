@@ -26,3 +26,9 @@ async def no_ui_widget(request, ws):
     return {
         "date": "& the date"
     }
+
+@methods(['POST'])
+async def post_widget(request, ws, args):
+    return {
+        "date": args['my_arg']
+    }

@@ -160,3 +160,14 @@ async def test_alexa_bad_signature(client, widgets):
 @with_client
 async def test_alexa_old(client, widgets):
     await alexa_request(widgets, client, "alexa", old=True)
+
+@start_widgets()
+@with_client
+async def test_alexa_with_args(client, widgets):
+    alexa_response = await alexa_request(widgets, client, "post", args={
+        'my_arg': 'hello'
+    })
+
+    speech = alexa_response.json()["response"]["outputSpeech"]["ssml"]
+
+    assert_equal(speech, "<speak>hello</speak>")

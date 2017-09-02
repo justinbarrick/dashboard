@@ -137,6 +137,9 @@ class WidgetServer:
         async def real_widget(request, *args, **kwargs):
             encoding = request.headers.get('accept', 'html')
 
+            if request.method != 'GET':
+                kwargs['args'] = request.json
+
             response = await func(request, self.wc, *args, **kwargs)
             if 'json' in encoding:
                 return json(response)
@@ -148,7 +151,8 @@ class WidgetServer:
                     return html('', status=404)
 
         route = os.path.join(self.api_base, name)
-        self.app.add_route(real_widget, route)
+        methods = getattr(func, 'methods', ['GET'])
+        self.app.add_route(real_widget, route, methods=methods)
 
     async def start(self):
         """
@@ -238,7 +242,13 @@ class WidgetServer:
             logging.error('Widget not found.')
             return json({}, status=500)
 
-        response = await self.widgets[intent["name"]](request, self.wc)
+        kwargs = {}
+        if intent["slots"]:
+            kwargs['args'] = {}
+            for name, slot in intent["slots"].items():
+                kwargs['args'][slot['name']] = slot['value']
+
+        response = await self.widgets[intent["name"]](request, self.wc, **kwargs)
         ssml_template = self.get_template(intent["name"], ssml=True)
 
         rendered = ssml_template.render(response).replace('&', 'and')
