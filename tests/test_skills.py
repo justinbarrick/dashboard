@@ -48,7 +48,7 @@ async def alexa_request(widgets, client, endpoint, args=None, session=False, pla
                     }
                 },
                 "apiEndpoint": "https://api.amazonalexa.com/"
-            },  
+            },
             "AudioPlayer": {
                 "token": "string",
                 "offsetInMilliseconds": 0,

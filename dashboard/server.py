@@ -245,7 +245,7 @@ class WidgetServer:
         kwargs = {}
         if intent.get("slots"):
             kwargs['args'] = {}
-            for name, slot in intent["slots"].items():
+            for _, slot in intent["slots"].items():
                 kwargs['args'][slot['name']] = slot['value']
 
         response = await self.widgets[intent["name"]](request, self.wc, **kwargs)
@@ -259,7 +259,7 @@ class WidgetServer:
             "response": {
                 "outputSpeech": {
                     "type": "SSML",
-                    "ssml": rendered 
+                    "ssml": rendered
                 },
                 "shouldEndSession": True
             },
