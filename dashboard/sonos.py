@@ -28,7 +28,7 @@ class Sonos:
         if self.api_host:
             return
 
-        addrs = [ get_default_gateway(), '127.0.0.1' ]
+        addrs = [ '127.0.0.1', get_default_gateway() ]
 
         try:
             addrs.insert(0, socket.gethostbyname('docker.for.mac.localhost'))
