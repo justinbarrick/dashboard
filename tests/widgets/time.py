@@ -17,4 +17,18 @@ async def never_refresh_widget(request, ws):
         "date": "the date"
     }
 
+async def alexa_widget(request, ws):
+    return {
+        "date": "& the date"
+    }
 
+async def no_ui_widget(request, ws):
+    return {
+        "date": "& the date"
+    }
+
+@methods(['POST'])
+async def post_widget(request, ws, args):
+    return {
+        "date": args['my_arg']
+    }
