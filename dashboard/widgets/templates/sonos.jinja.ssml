@@ -1,0 +1,10 @@
+<speak>
+{% for speaker in speakers %}
+{% if speaker["state"]["tv"] %}
+TV
+{% else %}
+{{ speaker["state"]["currentTrack"]["title"] }} by  {{ speaker["state"]["currentTrack"]["artist"] }}
+{% endif %}
+is playing in the {{ speaker["name"] }}
+{% endfor %}
+</speak>
