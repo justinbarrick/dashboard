@@ -27,3 +27,22 @@ async def sonos_widget(request, ws):
     return {
         "speakers": zone_info
     }
+
+async def pause_sonos_widget(request, wc):
+    """
+    Pause the Sonos system.
+    """
+    zones = await wc.sonos.api('zones')
+
+    errors = []
+    for zone in zones:
+        name = zone['coordinator']['roomName'].replace(' ', '%20')
+
+        response = await wc.sonos.api('{}/pause'.format(name))
+        if response.get("status") != "success":
+            errors.append("could not pause {}: {}".format(name, str(response)))
+
+    return {
+        "result": "paused all speakers",
+        "errors": errors
+    }

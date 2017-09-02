@@ -18,6 +18,8 @@ async def test_dashboard_index(client, widgets):
     assert_in('time - 1', response.text)
     assert_in('default_timeout - None', response.text)
     assert_in('never_refresh - 0', response.text)
+    assert_in('alexa - None', response.text)
+    assert_not_in('no_ui', response.text)
 
 @start_widgets()
 @with_client

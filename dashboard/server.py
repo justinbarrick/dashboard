@@ -122,6 +122,10 @@ class WidgetServer:
         template_path = os.path.join(self.widget_path, 'templates')
         ext = '.jinja.html' if not ssml else '.jinja.ssml'
         template_path = os.path.join(template_path, name + ext)
+
+        if not os.path.exists(template_path):
+            return False
+
         return Template(open(template_path).read())
 
     def widget(self, name, func):
@@ -138,7 +142,10 @@ class WidgetServer:
                 return json(response)
             else:
                 template = self.get_template(name)
-                return html(template.render(response))
+                if template:
+                    return html(template.render(response))
+                else:
+                    return html('', status=404)
 
         route = os.path.join(self.api_base, name)
         self.app.add_route(real_widget, route)
@@ -169,7 +176,7 @@ class WidgetServer:
         self.index_template = self.get_template('index')
         return html(self.index_template.render({
             "widgets": dict([
-                (name, {"frequency": getattr(func, 'frequency', None)}) for name, func in self.widgets.items()
+                (name, {"frequency": getattr(func, 'frequency', None)}) for name, func in self.widgets.items() if self.get_template(name)
             ])
         }))
 

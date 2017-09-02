@@ -107,6 +107,12 @@ def with_sonos(*speakers):
             def zones(request):
                 return json(speakers or [speaker()])
 
+            @app.route('/<name>/<action>')
+            def action(request, name, action):
+                return json({
+                    "status": "success", "name": name, "action": action
+                })
+
             server = await app.create_server(host='0.0.0.0', port=5005, log_config=None)
 
             try:
@@ -215,3 +221,10 @@ async def test_sonos_widget_tv(client, widgets):
 
     response = await request_widget(client, 'sonos', False)
     assert_in('<span class="nowPlayingInfo trackTitle">TV</span>', response.text)
+
+@start_widgets('dashboard/widgets')
+@with_sonos(speaker(state="PLAYING", tv=True))
+@with_client
+async def test_sonos_widget_pause(client, widgets):
+    response = await request_widget(client, 'pause_sonos')
+    assert_equal(response.json(), { "result": "paused all speakers", "errors": [] })

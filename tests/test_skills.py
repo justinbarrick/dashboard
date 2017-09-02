@@ -145,6 +145,14 @@ async def test_alexa(client, widgets):
 
 @start_widgets()
 @with_client
+async def test_alexa_only(client, widgets):
+    alexa_response = await alexa_request(widgets, client, "no_ui")
+    speech = alexa_response.json()["response"]["outputSpeech"]["ssml"]
+
+    assert_equal(speech, "<speak>and the date</speak>")
+
+@start_widgets()
+@with_client
 async def test_alexa_bad_signature(client, widgets):
     await alexa_request(widgets, client, "alexa", bad=True)
 
