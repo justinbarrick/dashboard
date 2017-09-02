@@ -13,7 +13,7 @@ async def request_widget(client, widget, json=True):
 
     url = 'http://127.0.0.1:8080/api/widgets/{}'.format(widget).encode()
     return await client.get(url, headers={
-        b'Accept-Encoding': encoding
+        b'Accept': encoding
     })
 
 def start_loop(func):
@@ -29,6 +29,7 @@ def start_widgets(widget_path=None):
         @functools.wraps(func)
         async def wrapper(*args, **kwargs):
             widgets = WidgetServer(widget_path or 'tests/widgets')
+            widgets.TEST = True
             await widgets.start()
 
             try:

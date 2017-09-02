@@ -97,6 +97,7 @@ def with_sonos(*speakers):
         @functools.wraps(func)
         async def wrapper(*args, **kwargs):
             app = Sanic(log_config=None)
+            app.config.LOGO = None
 
             @app.route('/')
             def index(request):

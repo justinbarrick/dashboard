@@ -43,6 +43,19 @@ and module would render to::
 
     <div>123</div>
 
+Alexa Skills
+------------
+
+You can expose your widget as an Alexa skill by creating a template
+with the same name as the widget function, e.g. ``dashboard/widgets/templates/example.jinja.ssml``::
+
+    <speak>{{ abc }}</speak>
+
+You can then configure the skill in your Amazon account with the intent name
+as the widget name. See the `developer documentation`_ for information on setting up Alexa.
+
+.. _developer documentation: https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/registering-and-managing-alexa-skills-in-the-developer-portal
+
 Requesting the widget
 ---------------------
 
@@ -53,10 +66,10 @@ and returned::
     <div>123</div>
     user@dev:~/src/dashboard$
 
-If a widget is requested with the ``application/json`` accept-encoding, the json will be returned
+If a widget is requested with the ``application/json`` accept, the json will be returned
 instead of the rendered template::
 
-    user@dev:~/src/dashboard$ curl http://172.18.0.2:8080/api/widgets/example -H 'Accept-Encoding: application/json'
+    user@dev:~/src/dashboard$ curl http://172.18.0.2:8080/api/widgets/example -H 'Accept: application/json'
     {"abc": "123"}
     user@dev:~/src/dashboard$
 

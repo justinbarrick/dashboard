@@ -17,4 +17,8 @@ async def never_refresh_widget(request, ws):
         "date": "the date"
     }
 
-
+@refresh_every(1)
+async def alexa_widget(request, ws):
+    return {
+        "date": "& the date"
+    }

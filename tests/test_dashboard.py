@@ -29,7 +29,7 @@ async def test_dashboard_html(client, widgets):
 @with_client
 async def test_dashboard_json(client, widgets):
     response = await client.get(b'http://127.0.0.1:8080/api/widgets/time', headers={
-        b'Accept-Encoding': b'application/json'
+        b'Accept': b'application/json'
     })
 
     assert_equal(response.json(), {'date':'the date'})
