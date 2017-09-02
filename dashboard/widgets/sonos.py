@@ -46,3 +46,29 @@ async def pause_sonos_widget(request, wc):
         "result": "paused all speakers",
         "errors": errors
     }
+
+@methods(['POST'])
+async def play_sonos_widget(request, wc, args):
+    """
+    Play the Sonos system.
+    """
+    room = args['room']
+
+    zones = await wc.sonos.api('zones')
+
+    errors = []
+    for zone in zones:
+        if zone['coordinator']['roomName'].lower() != room.lower():
+            continue
+
+        name = zone['coordinator']['roomName'].replace(' ', '%20')
+        response = await wc.sonos.api('{}/play'.format(name))
+        if response.get("status") != "success":
+            errors.append("could not play {}: {}".format(name, str(response)))
+        else:
+            return { "result": "played the {}".format(room) }
+
+    return {
+        "status": "error",
+        "errors": errors
+    }

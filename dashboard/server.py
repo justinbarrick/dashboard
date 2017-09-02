@@ -243,7 +243,7 @@ class WidgetServer:
             return json({}, status=500)
 
         kwargs = {}
-        if intent["slots"]:
+        if intent.get("slots"):
             kwargs['args'] = {}
             for name, slot in intent["slots"].items():
                 kwargs['args'][slot['name']] = slot['value']

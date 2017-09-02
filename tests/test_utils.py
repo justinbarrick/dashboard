@@ -1,20 +1,26 @@
 import logging
 import asyncio
 import functools
+from json import dumps
 import uvhttp.http
 
 from dashboard.server import WidgetServer
 
-async def request_widget(client, widget, json=True):
+async def request_widget(client, widget, json=True, args=None):
     if json:
         encoding = b'application/json'
     else:
         encoding = b'text/html'
 
+    method = b'GET'
+    if args:
+        method = b'POST'
+        args = dumps(args).encode()
+
     url = 'http://127.0.0.1:8080/api/widgets/{}'.format(widget).encode()
-    return await client.get(url, headers={
+    return await client.request(method, url, headers={
         b'Accept': encoding
-    })
+    }, data=args)
 
 def start_loop(func):
     @functools.wraps(func)

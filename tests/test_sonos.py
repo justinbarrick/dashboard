@@ -228,3 +228,13 @@ async def test_sonos_widget_tv(client, widgets):
 async def test_sonos_widget_pause(client, widgets):
     response = await request_widget(client, 'pause_sonos')
     assert_equal(response.json(), { "result": "paused all speakers", "errors": [] })
+
+@start_widgets('dashboard/widgets')
+@with_sonos(speaker(state="PLAYING", tv=True))
+@with_client
+async def test_sonos_widget_play(client, widgets):
+    response = await request_widget(client, 'play_sonos', args={
+        'room': 'Living Room'
+    })
+
+    assert_equal(response.json(), { "result": "played the Living Room"  })
