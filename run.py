@@ -2,8 +2,8 @@ from dashboard.server import WidgetServer
 import asyncio
 import argparse
 
-async def main():
-    widgets = WidgetServer('dashboard/widgets')
+async def main(settings=None):
+    widgets = WidgetServer('dashboard/widgets', settings=settings)
     await widgets.start()
     return widgets
 
