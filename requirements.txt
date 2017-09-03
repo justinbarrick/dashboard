@@ -6,3 +6,4 @@ Jinja2==2.9.6
 uvhttp==1.13
 coverage==4.4.1
 pyOpenSSL==17.2.0
+uvhue==0.1

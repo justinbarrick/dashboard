@@ -72,3 +72,8 @@ async def play_sonos_widget(request, wc, args):
         "status": "error",
         "errors": errors
     }
+
+@methods(['POST'])
+async def sonos_hue_widget(request, wc, args):
+    logging.error('Args were: {}'.format(str(args))
+    return {}
