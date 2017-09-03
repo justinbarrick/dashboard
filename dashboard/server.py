@@ -4,6 +4,7 @@ from sanic import Sanic
 from sanic.response import html, json
 from urllib.parse import urljoin
 from datetime import datetime
+from json import load as load_json
 
 import base64
 import functools
@@ -49,7 +50,7 @@ class WidgetServer:
 
     Static assets are served from ``/static``.
     """
-    def __init__(self, widget_path):
+    def __init__(self, widget_path, resolver=None, settings=None):
         self.__app = None
         self.__api_base = None
         self.__server = None
@@ -66,7 +67,10 @@ class WidgetServer:
         self.app.static('/css', './dashboard/widgets/templates/css/')
         self.app.add_route(self.skill_endpoint, '/alexa', methods=['POST'])
 
-        self.wc = WidgetContext()
+        self.settings = load_json(open(settings or 'settings.json'))
+
+        self.wc = WidgetContext(resolver=resolver, settings=self.settings)
+        self.resolver = resolver
 
     @property
     def widget_path(self):

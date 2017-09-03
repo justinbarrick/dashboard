@@ -1,0 +1,5 @@
+{
+    "hue_token": "hue_api_hue_api_hue_api_hue_api_",
+    "hue_address": "http://hue",
+    "img_processing_api": "http://127.0.0.1:5005/image"
+}

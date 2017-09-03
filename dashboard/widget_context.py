@@ -1,6 +1,7 @@
 from dashboard.sonos import Sonos
 import asyncio
 import uvhttp.http
+from uvhue.uvhue import Hue
 
 class WidgetContext:
     """
@@ -8,9 +9,13 @@ class WidgetContext:
     
     The context contains methods useful for widgets.
     """
-    def __init__(self):
+    def __init__(self, resolver=None, settings=None):
         self.__sonos = None
         self.__client = None
+        self.__hue = None
+        self.resolver = resolver
+        self.settings = settings
+        self.party_mode = False
 
     @property
     def client(self):
@@ -23,7 +28,7 @@ class WidgetContext:
                 return { "ip": response.json()["origin"] }
         """
         if not self.__client:
-            self.__client = uvhttp.http.Session(10, asyncio.get_event_loop())
+            self.__client = uvhttp.http.Session(10, asyncio.get_event_loop(), resolver=self.resolver)
 
         return self.__client
 
@@ -44,3 +49,19 @@ class WidgetContext:
     @sonos.setter
     def sonos(self, sonos):
         self.__sonos = sonos
+
+    @property
+    def hue(self):
+        """
+        The :class:`uvhue.uvhue.Hue` client that can be used by widgets.
+        """
+        if not self.__hue:
+            hue_api = self.settings['hue_address'].encode()
+            self.__hue = Hue(asyncio.get_event_loop(), hue_api, resolver=self.resolver)
+            self.__hue.hue_id = self.settings['hue_token']
+
+        return self.__hue
+
+    @hue.setter
+    def hue(self, hue):
+        self.__hue = hue
