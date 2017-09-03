@@ -75,13 +75,13 @@ async def play_sonos_widget(request, wc, args):
         "errors": errors
     }
 
-@methods(['POST'])
 async def party_mode_widget(request, wc):
     if not wc.party_mode:
         wc.party_mode = True
         await play_sonos_widget(request, wc, {"room": "Living Room"})
     else:
         await pause_sonos_widget(request, wc)
+        light_result = await wc.hue.set_states({"xy": rgb_to_xy([255,  255, 255])})
         wc.party_mode = False
 
     return {

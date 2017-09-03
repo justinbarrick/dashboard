@@ -328,6 +328,8 @@ def create_state(tv=False, paused=False):
 @with_sonos(speaker(state="PLAYING", tv=True))
 @with_client
 async def test_sonos_widget_hue_integration(client, hue_server, widgets):
+    widgets.wc.party_mode = True
+
     hue_server.valid_users.append(widgets.settings['hue_token'])
 
     widgets.resolver.add_to_cache(b'hue', 80, hue_server.host.encode(), 60, port=hue_server.port)
@@ -345,6 +347,8 @@ async def test_sonos_widget_hue_integration(client, hue_server, widgets):
 @with_sonos(speaker(state="PLAYING", tv=True))
 @with_client
 async def test_sonos_widget_hue_integration_tv(client, hue_server, widgets):
+    widgets.wc.party_mode = True
+
     hue_server.valid_users.append(widgets.settings['hue_token'])
 
     widgets.resolver.add_to_cache(b'hue', 80, hue_server.host.encode(), 60, port=hue_server.port)
@@ -362,6 +366,8 @@ async def test_sonos_widget_hue_integration_tv(client, hue_server, widgets):
 @with_sonos(speaker(state="PLAYING", tv=True))
 @with_client
 async def test_sonos_widget_hue_integration_pause(client, hue_server, widgets):
+    widgets.wc.party_mode = True
+
     hue_server.valid_users.append(widgets.settings['hue_token'])
 
     widgets.resolver.add_to_cache(b'hue', 80, hue_server.host.encode(), 60, port=hue_server.port)
