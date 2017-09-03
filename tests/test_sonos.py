@@ -250,9 +250,13 @@ async def test_sonos_widget_play(client, widgets):
     assert_equal(response.json(), { "result": "played the Living Room"  })
 
 @start_widgets('dashboard/widgets')
+@http_server_no_loop(HueServer)
 @with_sonos(speaker(state="PLAYING", tv=True))
 @with_client
-async def test_sonos_widget_party_mode(client, widgets):
+async def test_sonos_widget_party_mode(client, hue_server, widgets):
+    hue_server.valid_users.append(widgets.settings['hue_token'])
+    widgets.resolver.add_to_cache(b'hue', 80, hue_server.host.encode(), 60, port=hue_server.port)
+
     response = await request_widget(client, 'party_mode')
     assert_equal(response.json(), { "party_mode": True })
 
