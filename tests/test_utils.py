@@ -3,6 +3,7 @@ import asyncio
 import functools
 from json import dumps
 import uvhttp.http
+import uvhttp.dns
 
 from dashboard.server import WidgetServer
 
@@ -34,7 +35,9 @@ def start_widgets(widget_path=None):
         @start_loop
         @functools.wraps(func)
         async def wrapper(*args, **kwargs):
-            widgets = WidgetServer(widget_path or 'tests/widgets')
+            resolver = uvhttp.dns.Resolver(asyncio.get_event_loop())
+
+            widgets = WidgetServer(widget_path or 'tests/widgets', resolver=resolver, settings='tests/test_data/settings.json')
             widgets.TEST = True
             await widgets.start()
 

@@ -37,6 +37,8 @@ class Sonos:
 
         for addr in addrs:
             try:
+                import logging
+                logging.error(addr)
                 await self.session.get(self.api_base.format(addr).encode())
                 self.api_host = addr
                 break

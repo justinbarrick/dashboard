@@ -1,0 +1,1 @@
+<speak>Set party mode to {{ "on" if party_mode else "off" }}</speak>

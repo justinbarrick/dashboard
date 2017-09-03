@@ -3,6 +3,7 @@ sanic==0.6.0
 uvloop==0.8.0
 nose==1.3.7
 Jinja2==2.9.6
-uvhttp==1.13
+uvhttp==1.18
 coverage==4.4.1
 pyOpenSSL==17.2.0
+uvhue==0.1

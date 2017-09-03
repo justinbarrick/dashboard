@@ -52,7 +52,7 @@ async def test_dashboard_post_widget(client, widgets):
 @start_loop
 @with_client
 async def test_dashboard_run(client):
-    widgets = await run.main()
+    widgets = await run.main(settings="tests/test_data/settings.json")
 
     try:
         response = await client.get(b'http://127.0.0.1:8080/')
