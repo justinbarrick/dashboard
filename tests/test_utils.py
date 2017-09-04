@@ -4,6 +4,8 @@ import functools
 from json import dumps
 import uvhttp.http
 import uvhttp.dns
+import os
+import subprocess
 
 from dashboard.server import WidgetServer
 
@@ -44,6 +46,7 @@ def start_widgets(widget_path=None):
             try:
                 return await func(widgets, *args, **kwargs)
             finally:
+                print('stopped...')
                 widgets.stop()
 
         return wrapper
@@ -55,5 +58,20 @@ def with_client(func):
     async def wrapper(*args, **kwargs):
         session = uvhttp.http.Session(5, asyncio.get_event_loop())
         return await func(session, *args, **kwargs)
+
+    return wrapper
+
+def with_external_call(func):
+    @functools.wraps(func)
+    async def wrapper(*args, **kwargs):
+        fifo = None
+        try:
+            os.mkfifo('test.fifo')
+            fifo = os.open('test.fifo', os.O_RDONLY | os.O_NONBLOCK) 
+            return await func(fifo, *args, **kwargs)
+        finally:
+            os.unlink('test.fifo')
+            if fifo:
+                os.close(fifo)
 
     return wrapper

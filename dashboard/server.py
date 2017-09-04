@@ -175,6 +175,7 @@ class WidgetServer:
         """
         if self.server:
             self.server.close()
+            self.wc.close()
             self.server = None
 
     async def index(self, request):

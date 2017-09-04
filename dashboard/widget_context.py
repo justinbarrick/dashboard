@@ -1,4 +1,5 @@
 from dashboard.sonos import Sonos
+import concurrent.futures
 import asyncio
 import uvhttp.http
 from uvhue.uvhue import Hue
@@ -16,6 +17,13 @@ class WidgetContext:
         self.resolver = resolver
         self.settings = settings
         self.party_mode = False
+        self.executor = concurrent.futures.ProcessPoolExecutor()
+
+    async def run(self, func, *args):
+        """
+        Run a function in an external process if it is CPU intensive.
+        """
+        return await asyncio.get_event_loop().run_in_executor(self.executor, func, *args)
 
     @property
     def client(self):
@@ -65,3 +73,6 @@ class WidgetContext:
     @hue.setter
     def hue(self, hue):
         self.__hue = hue
+
+    def close(self):
+        self.executor.shutdown()

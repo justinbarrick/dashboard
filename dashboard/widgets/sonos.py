@@ -1,4 +1,5 @@
 from dashboard.widget import *
+from dashboard.widgets import cec
 from uvhue.rgb import rgb_to_xy
 import asyncio
 import datetime
@@ -79,6 +80,7 @@ async def party_mode_widget(request, wc):
     if not wc.party_mode:
         wc.party_mode = True
         await play_sonos_widget(request, wc, {"room": "Living Room"})
+        await cec.tv_on_widget(request, wc)
     else:
         await pause_sonos_widget(request, wc)
         light_result = await wc.hue.set_states({"xy": rgb_to_xy([255,  255, 255])})
