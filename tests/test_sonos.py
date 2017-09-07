@@ -352,7 +352,7 @@ async def test_sonos_widget_hue_integration(client, server, hue_server, widgets)
         "album_art_uri": "http://127.0.0.1:5005/aaaa_album_art",
         "room": "Living Room",
         "state": "PLAYING",
-        "light_result": False,
+        "light_result": True,
         "rgb": [1, 1, 1]
     })
 
@@ -371,7 +371,7 @@ async def test_sonos_widget_hue_integration_tv(client, server, hue_server, widge
         "album_art_uri": None,
         "room": "Living Room",
         "state": "PLAYING",
-        "light_result": False,
+        "light_result": True,
         "rgb": [255, 255, 255]
     })
 
@@ -390,7 +390,7 @@ async def test_sonos_widget_hue_integration_pause(client, server, hue_server, wi
         "album_art_uri": "http://127.0.0.1:5005/aaaa_album_art",
         "room": "Living Room",
         "state": "PAUSED",
-        "light_result": False,
+        "light_result": True,
         "rgb": [255, 255, 255]
     })
 
@@ -410,6 +410,6 @@ async def test_sonos_widget_hue_integration_bad_hue_server(client, server, hue_s
         "album_art_uri": "http://127.0.0.1:5005/aaaa_album_art",
         "room": "Living Room",
         "state": "PLAYING",
-        "light_result": False,
+        "light_result": True,
         "rgb": [1, 1, 1]
     })
