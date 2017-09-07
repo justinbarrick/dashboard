@@ -111,8 +111,18 @@ async def sonos_hue_widget(request, wc, args):
 
     if results['state'] == 'PLAYING' and results['album_art_uri']:
         image = await wc.client.get(results['album_art_uri'].encode())
-        rgb = await wc.client.post(wc.settings['img_processing_api'].encode(), data=image.content)
-        rgb_value = rgb.json()["rgb"]
+
+        # retry up to three times
+        for _ in range(3):
+            rgb = await wc.client.post(wc.settings['img_processing_api'].encode(), data=image.content)
+            if rgb.status_code != 200:
+                continue
+
+            try:
+                rgb_value = rgb.json()["rgb"]
+                break
+            except ValueError:
+                continue
     else:
         rgb_value = [255, 255, 255]
 
