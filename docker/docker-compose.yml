@@ -21,6 +21,6 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    entrypoint: nosetests -v -s --with-coverage --cover-xml-file=/dashboard/coverage.xml --cover-xml 
+    entrypoint: ./tests/run_tests.sh
     volumes:
       - ..:/dashboard
