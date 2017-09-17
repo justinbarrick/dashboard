@@ -115,7 +115,13 @@ def with_sonos(*speakers):
             @app.route('/<name>/<action>')
             async def action(request, name, action):
                 return json({
-                    "status": "success", "name": name, "action": action
+                    "status": "success", "name": name, "action": action, "volume": 24
+                })
+
+            @app.route('/<name>/<action>/<volume>')
+            async def action(request, name, action, volume):
+                return json({
+                    "status": "success", "name": name, "action": action, "volume": volume
                 })
 
             @app.route('/aaaa_album_art')
@@ -273,7 +279,7 @@ async def test_sonos_widget_party_mode(fifo, client, server, hue_server, widgets
     assert_equal(response.json(), { "party_mode": False })
     assert_equal(os.read(fifo, 1024), b'')
 
-def create_state(tv=False, paused=False):
+def create_state(tv=False, paused=False, volume=24):
     playback = 'PLAYING' if not paused else 'PAUSED'
 
     state = {
@@ -299,7 +305,7 @@ def create_state(tv=False, paused=False):
                 'absoluteAlbumArtUri': 'http://127.0.0.1:5005/aaaa_album_art',
                 'uri': 'x-sonos-http:librarytrack%3aa.1268152499.mp4?sid=204&flags=8224&sn=1'},
             'elapsedTime': 94,
-            'volume': 24,
+            'volume': volume,
             'equalizer': {
                 'speechEnhancement': True,
                 'bass': 7,
@@ -320,7 +326,7 @@ def create_state(tv=False, paused=False):
             },
             'avTransportUri': 'x-rincon-queue:RINCON_B8E937409D0901400#0',
             'groupState': {
-                'volume': 24,
+                'volume': volume,
                 'mute': False
             },
             'roomName': 'Living Room'
@@ -395,21 +401,22 @@ async def test_sonos_widget_hue_integration_pause(client, server, hue_server, wi
     })
 
 @start_widgets('dashboard/widgets')
-@http_server_no_loop(HueServer)
 @with_sonos(speaker(state="PLAYING", tv=True))
 @with_client
-async def test_sonos_widget_hue_integration_bad_hue_server(client, server, hue_server, widgets):
-    widgets.wc.party_mode = True
-    server['image_valid'] = False
-
-    hue_server.valid_users.append(widgets.settings['hue_token'])
-
-    widgets.resolver.add_to_cache(b'hue', 80, hue_server.host.encode(), 60, port=hue_server.port)
-    response = await request_widget(client, 'sonos_hue', args=create_state())
-    assert_equal(response.json(), {
-        "album_art_uri": "http://127.0.0.1:5005/aaaa_album_art",
-        "room": "Living Room",
-        "state": "PLAYING",
-        "light_result": True,
-        "rgb": [1, 1, 1]
+async def test_sonos_widget_set_volume(client, server, widgets):
+    response = await request_widget(client, 'sonos_set_volume', args={
+        'room': 'Living Room',
+        'volume': 40
     })
+
+    assert_equal(response.json(), { "result": "Living Room volume set to 40"  })
+
+@start_widgets('dashboard/widgets')
+@with_sonos(speaker(state="PLAYING", tv=True))
+@with_client
+async def test_sonos_widget_get_volume(client, server, widgets):
+    response = await request_widget(client, 'sonos_get_volume', args={
+        'room': 'Living Room',
+    })
+
+    assert_equal(response.json(), { "result": "Living Room volume is 24"  })
