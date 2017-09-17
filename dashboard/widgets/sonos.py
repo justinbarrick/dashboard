@@ -133,3 +133,53 @@ async def sonos_hue_widget(request, wc, args):
         results["light_result"] = light_result
 
     return results
+
+@methods(['POST'])
+async def sonos_set_volume_widget(request, wc, args):
+    """
+    Set the sonos volume.
+    """
+    room = args['room']
+    volume = int(args['volume'])
+
+    zones = await wc.sonos.api('zones')
+
+    errors = []
+    for zone in zones:
+        if zone['coordinator']['roomName'].lower() != room.lower():
+            continue
+
+        name = zone['coordinator']['roomName'].replace(' ', '%20')
+        response = await wc.sonos.api('{}/volume/{}'.format(name, volume))
+        if response.get("status") != "success":
+            errors.append("could not set the volume in {}: {}".format(name, str(response)))
+        else:
+            return { "result": "{} volume set to {}".format(room, volume) }
+
+    return {
+        "status": "error",
+        "errors": errors
+    }
+
+@methods(['POST'])
+async def sonos_get_volume_widget(request, wc, args):
+    """
+    Get the sonos volume.
+    """
+    room = args['room']
+
+    zones = await wc.sonos.api('zones')
+
+    errors = []
+    for zone in zones:
+        if zone['coordinator']['roomName'].lower() != room.lower():
+            continue
+
+        name = zone['coordinator']['roomName'].replace(' ', '%20')
+        response = await wc.sonos.api('{}/state'.format(name))
+        return { "result": "{} volume is {}".format(room, response['volume']) }
+
+    return {
+        "status": "error",
+        "errors": errors
+    }
