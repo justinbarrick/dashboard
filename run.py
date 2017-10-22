@@ -1,9 +1,10 @@
 from dashboard.server import WidgetServer
+from uvhttp.dns import Resolver
 import asyncio
 import argparse
 
 async def main(settings=None):
-    widgets = WidgetServer('dashboard/widgets', settings=settings)
+    widgets = WidgetServer('dashboard/widgets', settings=settings, resolver=Resolver(asyncio.get_event_loop(), ipv6=False))
     await widgets.start()
     return widgets
 
